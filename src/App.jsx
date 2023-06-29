@@ -14,7 +14,6 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/*' element={<RequiredAuth> <Home /> </RequiredAuth>} />;
         <Route path='*' element={<Notfound />} />
-
       </Routes>
     </div>
   );

@@ -20,20 +20,26 @@ const Login = () => {
     setUser(object);
   }
 
-  const handleClickSubmit = async (e) => {
-    console.log(user)
+  const handleClickSubmit = async () => {
     if(user.email !== '' && user.password !== ''){
-      e.preventDefault();
       const isLogged = await auth.signin(user);
+      console.log(isLogged)
       if(isLogged){
-        console.log('chegou')
+        resetInput();
         navigate('/home')
       } else {
-        alert("erro")
+        resetInput();
       }
     } else {
-      console.log('campo vazio')
+      console.log('Campo vazio')
     }
+  }
+
+  const resetInput = () => {
+    const clearObject = {...user};
+    clearObject.email = '';
+    clearObject.password = '';
+    setUser(clearObject);
   }
 
   return (
@@ -51,11 +57,13 @@ const Login = () => {
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
               <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seu email</label>
-              <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" onChange={e => handInputUser(e.target.value)} />
+              <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" onChange={e => handInputUser(e.target.value)}
+              value={user.email} />
             </div>
             <div>
               <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
-              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={e => handInputPassword(e.target.value)}/>
+              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={e => handInputPassword(e.target.value)}
+              value={user.password}/>
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-start">

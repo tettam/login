@@ -7,14 +7,10 @@ const AuthProvider = ({children}) => {
   const [user , setUser] = useState(null);
   const apiRequest = new ApiRequest();
 
-  const updatePassword = () => {
-
-  }
-
   const signin = async (user) => {
     try {
       const data = await apiRequest.validatorToken(user);
-      if(data.Token != null){
+      if(data != null){
         setToken(data.token);
         setUser(user);
         return true;
@@ -30,9 +26,14 @@ const AuthProvider = ({children}) => {
     setUser(null);
   }
 
-
   return (
-    <AuthContext.Provider value={{ updatePassword , signin , signout }}>
+    <AuthContext.Provider 
+      value={{ 
+        user,
+        token,
+        signin,
+        signout 
+      }}>
       {children}
     </AuthContext.Provider>
   )
