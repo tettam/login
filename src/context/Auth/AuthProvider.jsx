@@ -12,11 +12,15 @@ const AuthProvider = ({children}) => {
   }
 
   const signin = async (user) => {
-    const data = await apiRequest.validatorToken(user);
-    if(data.token != null){
-      setToken(data.token);
-      setUser(user);
-      return true;
+    try {
+      const data = await apiRequest.validatorToken(user);
+      if(data.Token != null){
+        setToken(data.token);
+        setUser(user);
+        return true;
+      }
+    } catch (error) {
+      return false;
     }
     return false;
   }

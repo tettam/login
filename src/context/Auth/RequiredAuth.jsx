@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 
 export const RequiredAuth = ({children}) => {
   const auth = useContext(AuthContext);
-  if(auth.signin) {
-    <Link path="/login" />
+  if(!auth.signin) {
     return <Login />
   }
   return children;

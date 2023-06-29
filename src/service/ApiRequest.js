@@ -32,7 +32,7 @@ class ApiRequest {
       const response = await axios.post(`${this.baseUri}/management/login` , user)
       return response.data;
     } catch (error) {
-      console.log(error.response.data)
+      return null;
     }
   }
 }

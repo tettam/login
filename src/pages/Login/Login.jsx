@@ -1,16 +1,12 @@
-import React from 'react';
-import { Checkbox } from 'primereact/checkbox';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import 'primeicons/primeicons.css';
-
-import { useState } from 'react';
+import React, { useContext , useState} from 'react';
+import { AuthContext } from '../../context/Auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
   const [user , setUser] = useState({email: "", password: ""})
-  const [checked , setChecked] = useState(false);
 
   const handInputUser = (data) => {
     const object = {...user}
@@ -25,38 +21,63 @@ const Login = () => {
   }
 
   const handleClickSubmit = async (e) => {
-    
+    console.log(user)
+    if(user.email !== '' && user.password !== ''){
+      e.preventDefault();
+      const isLogged = await auth.signin(user);
+      if(isLogged){
+        console.log('chegou')
+        navigate('/home')
+      } else {
+        alert("erro")
+      }
+    } else {
+      console.log('campo vazio')
+    }
   }
 
   return (
-    <div className="flex align-items-center justify-content-center">
-      <div className="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-        <div className="text-center mb-5">
-            <img src="/demo/images/blocks/logos/hyper.svg" alt="hyper" height={50} className="mb-3" />
-            <div className="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-            <span className="text-600 font-medium line-height-3">Don't have an account?</span>
-            <a className="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
-        </div>
-
-        <div>
-            <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-            <InputText id="email" type="text" placeholder="Email address" className="w-full mb-3" onChange={(e) => handInputUser(e.target.value)}/>
-
-            <label htmlFor="password" className="block text-900 font-medium mb-2">Password</label>
-            <InputText id="password" type="password" placeholder="Password" className="w-full mb-3" onChange={(e) => handInputPassword(e.target.value)}/>
-
-            <div className="flex align-items-center justify-content-between mb-6">
-              <div className="flex align-items-center">
-                <Checkbox id="rememberme" onChange={e => setChecked(e.checked)} checked={checked} className="mr-2" />
-                <label htmlFor="rememberme">Remember me</label>
-              </div>
-                <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
+    <section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+          <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"/>
+          Autenticação Usuário
+      </a>
+      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Entre com sua conta
+          </h1>
+          <form class="space-y-4 md:space-y-6" action="#">
+            <div>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seu email</label>
+              <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" onChange={e => handInputUser(e.target.value)} />
             </div>
+            <div>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Senha</label>
+              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={e => handInputPassword(e.target.value)}/>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required=""/>
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="remember" class="text-gray-500 dark:text-gray-300">Lembrar-me</label>
+                </div>
+              </div>
+                <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Esqueceu a senha?</a>
+            </div>
+            <button class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={e => handleClickSubmit(e)}>Entrar</button>
 
-            <Button label="Sign In" icon="pi pi-user" className="w-full" onClick={handleClickSubmit}/>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                Não tem conta? <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Cadastre-se</a>
+            </p>
+          </form>
         </div>
       </div>
     </div>
+  </section>
   )
 }
 
