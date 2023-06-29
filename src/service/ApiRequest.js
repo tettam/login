@@ -6,10 +6,6 @@ class ApiRequest {
     this.baseUri = process.env.REACT_APP_API
   }
 
-  authenticated(){
-    return localStorage.getItem(this.TOKEN_KEY != null)
-  }
-
   async findById(id, token){
     try {
       const headerRequest = {headers: {Authorization: `Bearer ${token}`}};
@@ -34,11 +30,9 @@ class ApiRequest {
   async validatorToken(user){
     try {
       const response = await axios.post(`${this.baseUri}/management/login` , user)
-      localStorage.setItem(this.TOKEN_KEY, response.data.Token)
       return response.data;
     } catch (error) {
-      console.log(error.response.data.message)
-      return null;
+      return error.response.data;
     }
   }
 }
